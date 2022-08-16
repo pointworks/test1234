@@ -2,7 +2,7 @@ name: workflow with pullrequest
 
 on:
   pull_request:
-    branches: [dpointworks-patch-10]
+    branches: [pointworks-patch-10]
     # branches: [dummy]
 
 jobs:
