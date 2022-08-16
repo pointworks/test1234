@@ -1,0 +1,64 @@
+name: workflow with push
+
+on:
+  push:
+    branches: [develop]
+    # branches: [dummy]
+
+jobs:
+  # start job
+  StartJob:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: start to push.yml
+        run: echo start to push.yml!
+
+  # release job
+  releaseJob:
+    runs-on: ubuntu-latest
+    defaults:
+      # change working directory
+      run:
+        working-directory: ./server
+
+    steps:
+      # instarll to public ip
+      - name: public ip Install
+        id: ip
+        uses: haythem/public-ip@v1.2
+
+      # Checkout
+      - name: checkout
+        uses: actions/checkout@v3
+
+      # # install to AWS CLI
+      # - name: AWS CLI install
+      #   run: |
+      #     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      #     unzip awscliv2.zip
+      #     sudo ./aws/install --update
+      #     aws --version
+
+      # # set credentials to AWS（dev環境なので一旦べた書き、AWSアカウントに紐付く情報を設定。）
+      # - name: AWS set Credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: xxxxxxxxxx
+      #     aws-secret-access-key: xxxxxxxxxx
+      #     aws-session-token: xxxxxxxxxx
+      #     aws-region: ap-northeast-1
+
+      # SSHのセキュリティグループを開放する
+      # aws ec2 authorize-security-group-ingress --group-id sg-0c39fa77652dd1899 --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
+      # deploy（dev環境なので一旦べた書き、パスワード認証。）
+      - name: Deploy
+        run: |
+          echo start.
+          sshpass -p 'sxorhMlJUSq$yn-Wy2Am(9!wDX*t!8fB' ssh -oStrictHostKeyChecking=no Administrator@3.113.205.30 "cd C:\Users\Administrator\GitHub\sc-pointworks && pointworks-down.bat && git pull && npm run build && pointworks-up.bat"
+          echo end.
+
+      # SSHのセキュリティグループを閉じる
+      # aws ec2 revoke-security-group-ingress --group-id sg-0c39fa77652dd1899 --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
