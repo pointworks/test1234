@@ -21,7 +21,7 @@ jobs:
   ########################################
   # test job
   testJob:
-    runs-on: ubuntu-latest
+    runs-on: testhosted
     defaults:
       # change working directory
       run:
