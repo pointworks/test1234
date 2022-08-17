@@ -2,13 +2,13 @@ name: workflow with pullrequest
 
 on:
   pull_request:
-    branches: [dpointworks-patch-10]
+    branches: [pointworks-patch-10]
     # branches: [dummy]
 
 jobs:
   # start job
   StartJob:
-    runs-on: testhosted
+    runs-on: 20220817
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -21,7 +21,7 @@ jobs:
   ########################################
   # test job
   testJob:
-    runs-on: testhosted
+    runs-on: 20220817
     defaults:
       # change working directory
       run:
