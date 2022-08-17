@@ -1,0 +1,43 @@
+name: workflow with pullrequest
+
+on:
+  pull_request:
+    branches: [pointworks-patch-10]
+    # branches: [dummy]
+
+jobs:
+  # start job
+  StartJob:
+    runs-on: aaaaaaaaaaaaaaa
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: start to pullrequest.yml
+        run: echo start to pullrequest.yml!
+
+  # analytics job
+  ########################################
+  # TODO : Github⇔SonarCloudの連携を行う
+  ########################################
+  # test job
+  testJob:
+    runs-on: aaaaaaaaaaaaaaa
+    defaults:
+      # change working directory
+      run:
+        working-directory: ./server
+
+    steps:
+      # checkout
+      - name: checkout
+        uses: actions/checkout@v2
+      # specify node version
+      - name: Use Node.js v16.14.2
+        uses: actions/setup-node@v1
+        with:
+          node-version: "16.14.2"
+
+      # run test
+      - run: npm install
+      - run: npm run build --if-present
+      # - run: npm run test
